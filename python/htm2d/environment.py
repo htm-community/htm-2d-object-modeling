@@ -1,5 +1,5 @@
 
-
+import yaml
 
 class TwoDimensionalEnvironment:
 
@@ -8,6 +8,13 @@ class TwoDimensionalEnvironment:
         self._height = height
         self._features = [[None] * height] * width
 
+    def load_object(self, yamlText):
+        obj = yaml.load(yamlText)
+        for feature in obj.get("features"):
+            x = feature.get("x")
+            y = feature.get("y")
+            data = feature.get("data")
+            self._features[x][y] = data
 
     def size(self):
         return self._width * self._height
