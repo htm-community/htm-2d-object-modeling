@@ -1,0 +1,23 @@
+---
+name: Object A
+width: 20
+height: 20
+features:
+  - { x: 3, y: 3, data: X }
+  - { x: 3, y: 4, data: X }
+  - { x: 3, y: 5, data: X }
+  - { x: 4, y: 3, data: X }
+  - { x: 4, y: 4, data: X }
+  - { x: 4, y: 5, data: X }
+  - { x: 5, y: 3, data: X }
+  - { x: 5, y: 4, data: X }
+  - { x: 5, y: 5, data: X }
+  - { x: 12, y: 7, data: X }
+  - { x: 12, y: 8, data: X }
+  - { x: 12, y: 9, data: X }
+  - { x: 13, y: 7, data: X }
+  - { x: 13, y: 8, data: X }
+  - { x: 13, y: 9, data: X }
+  - { x: 14, y: 7, data: X }
+  - { x: 14, y: 8, data: X }
+  - { x: 14, y: 9, data: X }
