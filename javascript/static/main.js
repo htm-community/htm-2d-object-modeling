@@ -1,4 +1,4 @@
-import objects from './objects/*.yml'  // loads all the yaml objects and parses them.
+import objects from '../../objects/*.yml'  // loads all the yaml objects and parses them.
 import $ from "jquery"
 
 $(() => {
@@ -20,8 +20,8 @@ $(() => {
         object.features.forEach(feature => {
             ctx.fillText(
                 feature.data,
-                feature.y * cellSize,
-                feature.x * cellSize + cellSize)
+                feature.x * cellSize,
+                feature.y * cellSize + cellSize)
         })
     }
 
