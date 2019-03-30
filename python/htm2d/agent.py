@@ -1,8 +1,4 @@
-
-
-
-class Agent():
-
+class Agent:
     def set_env(self, env, x, y):
         self._env = env
         self._f = env.get_feature(x, y)

@@ -6,14 +6,18 @@ from htm2d.environment import TwoDimensionalEnvironment
 class EnvironmentTests(unittest.TestCase):
     def test_load_features(self):
         env = TwoDimensionalEnvironment(28, 28)
-        env.load_object(("---\n"
-                        "name: Object A\n"
-                        "width: 20\n"
-                        "height: 20\n" 
-                        "features:\n"
-                        "  - { x: 3, y: 3, data: A }\n"
-                        "  - { x: 4, y: 3, data: A }\n"
-                        "  - { x: 3, y: 4, data: B }\n" ))
+        env.load_object(
+            (
+                "---\n"
+                "name: Object A\n"
+                "width: 20\n"
+                "height: 20\n"
+                "features:\n"
+                "  - { x: 3, y: 3, data: A }\n"
+                "  - { x: 4, y: 3, data: A }\n"
+                "  - { x: 3, y: 4, data: B }\n"
+            )
+        )
         self.assertEqual(env.get_feature(3, 3), "A")
         self.assertEqual(env.get_feature(4, 3), "A")
         self.assertEqual(env.get_feature(3, 4), "B")
@@ -45,4 +49,3 @@ class EnvironmentTests(unittest.TestCase):
                 self.assertIsNone(f)
                 count += 1
         self.assertEqual(w * h, count)
-

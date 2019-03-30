@@ -7,19 +7,18 @@
 
 `mvn clean install`
 
-This project is formatted with https://google.github.io/styleguide/javaguide.html, which is automatically taken care of by a maven plugin on build.
+This project is formatted with https://google.github.io/styleguide/javaguide.html.  Builds will fail if you don't use this format.
+
+```
+brew install google-java-format
+google-java-format --replace **/*.java
+```
 
 If you want your IDE to follow this format:
 
 **VS Code setup**
 
-* Change the indent size to 2.
-* Add to following to your settings
-  ```
-  "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
-  ```
-
-
+https://github.com/redhat-developer/vscode-java/issues/419#issuecomment-360820321
 
 **Intellij/Eclipse**
 
