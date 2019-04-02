@@ -2,7 +2,7 @@
 
 ## Installation
 
-Pipenv seems to be a solid environment / requirements manager. https://github.com/pypa/pipenv
+Pipenv seems to be the best environment manager.  https://pipenv.readthedocs.io/en/latest/
 
 Inside the `python` directory, run:
 
@@ -14,7 +14,7 @@ pipenv install
 ## Run the tests
 
 ```
-pipenv python -m unittest tests/*.py
+pipenv run python -m unittest tests/*.py
 ```
 
 ## Add a package

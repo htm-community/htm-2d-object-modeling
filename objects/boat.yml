@@ -1,0 +1,42 @@
+---
+name: Boat
+width: 20
+height: 20
+features:
+
+  # mast
+  - { x: 10, y: 4, data: X }
+  - { x: 10, y: 5, data: X }
+  - { x: 10, y: 6, data: X }
+  - { x: 10, y: 7, data: X }
+  - { x: 10, y: 8, data: X }
+  - { x: 10, y: 9, data: X }
+  - { x: 10, y: 10, data: X }
+  - { x: 10, y: 11, data: X }
+  - { x: 10, y: 12, data: X }
+  - { x: 10, y: 13, data: X }
+  - { x: 10, y: 14, data: X }
+
+  # sail
+  - { x: 9, y: 5, data: X }
+  - { x: 8, y: 6, data: X }
+  - { x: 7, y: 7, data: X }
+  - { x: 8, y: 7, data: X }
+  - { x: 9, y: 7, data: X }
+
+  # hull
+  - { x: 4, y: 13, data: X }
+  - { x: 5, y: 14, data: X }
+  - { x: 6, y: 15, data: X }
+  - { x: 6, y: 15, data: X }
+  - { x: 7, y: 15, data: X }
+  - { x: 8, y: 15, data: X }
+  - { x: 9, y: 15, data: X }
+  - { x: 10, y: 15, data: X }
+  - { x: 11, y: 15, data: X }
+  - { x: 12, y: 15, data: X }
+  - { x: 13, y: 15, data: X }
+  - { x: 14, y: 15, data: X }
+  - { x: 15, y: 14, data: X }
+  - { x: 16, y: 13, data: X }
+

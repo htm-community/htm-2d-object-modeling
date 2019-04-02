@@ -20,8 +20,8 @@ $(() => {
         object.features.forEach(feature => {
             ctx.fillText(
                 feature.data,
-                feature.y * cellSize,
-                feature.x * cellSize + cellSize)
+                feature.x * cellSize,
+                feature.y * cellSize + cellSize)
         })
     }
 

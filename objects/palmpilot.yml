@@ -1,0 +1,76 @@
+---
+name: Palm Pilot
+width: 20
+height: 20
+features:
+  # left side
+  - { x: 6, y: 4, data: X }
+  - { x: 6, y: 5, data: X }
+  - { x: 6, y: 6, data: X }
+  - { x: 6, y: 7, data: X }
+  - { x: 6, y: 8, data: X }
+  - { x: 6, y: 9, data: X }
+  - { x: 6, y: 10, data: X }
+  - { x: 6, y: 11, data: X }
+  - { x: 6, y: 12, data: X }
+  - { x: 6, y: 13, data: X }
+  - { x: 6, y: 14, data: X }
+
+  # right side
+  - { x: 13, y: 4, data: X }
+  - { x: 13, y: 5, data: X }
+  - { x: 13, y: 6, data: X }
+  - { x: 13, y: 7, data: X }
+  - { x: 13, y: 8, data: X }
+  - { x: 13, y: 9, data: X }
+  - { x: 13, y: 10, data: X }
+  - { x: 13, y: 11, data: X }
+  - { x: 13, y: 12, data: X }
+  - { x: 13, y: 13, data: X }
+  - { x: 13, y: 14, data: X }
+
+  # antenna
+  - { x: 14, y: 2, data: X }
+  - { x: 14, y: 3, data: X }
+  - { x: 14, y: 4, data: X }
+  - { x: 14, y: 5, data: X }
+  - { x: 14, y: 6, data: X }
+  - { x: 14, y: 7, data: X }
+
+  # bottom
+  - { x: 7, y: 15, data: X }
+  - { x: 8, y: 15, data: X }
+  - { x: 9, y: 15, data: X }
+  - { x: 10, y: 15, data: X }
+  - { x: 11, y: 15, data: X }
+  - { x: 12, y: 15, data: X }
+
+  # top
+  - { x: 7, y: 3, data: X }
+  - { x: 8, y: 3, data: X }
+  - { x: 9, y: 3, data: X }
+  - { x: 10, y: 3, data: X }
+  - { x: 11, y: 3, data: X }
+  - { x: 12, y: 3, data: X }
+
+  # Screen
+  - { x: 8, y: 5, data: X }
+  - { x: 9, y: 5, data: X }
+  - { x: 10, y: 5, data: X }
+  - { x: 11, y: 5, data: X }
+  - { x: 8, y: 6, data: X }
+  - { x: 8, y: 7, data: X }
+  - { x: 11, y: 6, data: X }
+  - { x: 11, y: 7, data: X }
+  - { x: 8, y: 8, data: X }
+  - { x: 9, y: 8, data: X }
+  - { x: 10, y: 8, data: X }
+  - { x: 11, y: 8, data: X }
+
+  # Buttons
+  - { x: 11, y: 13, data: X }
+  - { x: 8, y: 13, data: X }
+  - { x: 11, y: 10, data: X }
+  - { x: 8, y: 10, data: X }
+
+
