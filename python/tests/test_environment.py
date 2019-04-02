@@ -10,7 +10,7 @@ class EnvironmentTests(unittest.TestCase):
             (
                 "---\n"
                 "name: Object A\n"
-                "width: 20\n"
+                 "width: 20\n"
                 "height: 20\n"
                 "features:\n"
                 "  - { x: 3, y: 3, data: A }\n"
