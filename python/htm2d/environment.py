@@ -13,7 +13,7 @@ class TwoDimensionalEnvironment:
             x = feature.get("x")
             y = feature.get("y")
             data = feature.get("data")
-            self._features[x][y] = data
+            self._features[x][y]  = data
 
     def size(self):
         return self._width * self._height
