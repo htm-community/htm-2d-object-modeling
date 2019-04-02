@@ -14,5 +14,5 @@ pipenv install
 ## Run the tests
 
 ```
-pipenv python -m unittest tests/*.py
+pipenv run python -m unittest tests/*.py
 ```
