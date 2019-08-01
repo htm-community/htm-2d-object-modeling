@@ -22,6 +22,37 @@ class EnvironmentTests(unittest.TestCase):
         self.assertEqual(env.get_feature(4, 3), "A")
         self.assertEqual(env.get_feature(3, 4), "B")
 
+    def test_bigObject(self):
+        env = TwoDimensionalEnvironment(5, 5)
+        
+        
+        self.assertRaises(RuntimeError,env.load_object,(#object is bigger than environment
+            (
+                "---\n"
+                "name: Object A\n"
+                "width: 20\n"
+                "height: 20\n"
+                "features:\n"
+                "  - { x: 3, y: 3, data: A }\n"
+                "  - { x: 4, y: 3, data: A }\n"
+                "  - { x: 3, y: 4, data: B }\n"
+            )
+        ))
+        
+        self.assertRaises(RuntimeError,env.load_object,(#object is as invalid feature
+            (
+                "---\n"
+                "name: Object A\n"
+                "width: 5\n"
+                "height: 5\n"
+                "features:\n"
+                "  - { x: 3, y: 3, data: A }\n"
+                "  - { x: 4, y: 3, data: A }\n"
+                "  - { x: 99, y: 4, data: B }\n"
+            )
+        ))
+        
+
     def test_sizeMatchesInputDimensions(self):
         env = TwoDimensionalEnvironment(28, 28)
         self.assertEqual(env.size(), 784)
