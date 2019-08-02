@@ -39,7 +39,7 @@ class EnvironmentTests(unittest.TestCase):
             )
         ))
         
-        self.assertRaises(RuntimeError,env.load_object,(#object is as invalid feature
+        self.assertRaises(RuntimeError,env.load_object,(#object contains invalid feature
             (
                 "---\n"
                 "name: Object A\n"
