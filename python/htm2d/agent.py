@@ -28,6 +28,9 @@ class Agent:
         else:
             raise NotImplemented("Wrong SensorLoc!")
         return f
+    
+    def get_position(self):
+        return [self._x,self._y]
 
     def move(self, x, y):
         if x<0 or y<0 or x>=self._env._width or y>=self._env._height:
