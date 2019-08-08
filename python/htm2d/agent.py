@@ -34,7 +34,7 @@ class Agent:
 
     def move(self, x, y):
         if x<0 or y<0 or x>=self._env._width or y>=self._env._height:
-            raise RuntimeError("Can't move outside environment borders!")
+            raise RuntimeError("Can't move outside environment borders!Pos:"+str([x,y]))
         self._x = x
         self._y = y
         

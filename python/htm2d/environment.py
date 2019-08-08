@@ -10,7 +10,7 @@ class TwoDimensionalEnvironment:
     def load_object(self, yaml_text):
         obj = yaml.safe_load(yaml_text)
         
-        if self._width <= obj.get('width') or self._height <= obj.get('height'):
+        if self._width < obj.get('width') or self._height < obj.get('height'):
             raise RuntimeError("Dimension of object is bigger than environment!")
             
         for feature in obj.get("features"):
@@ -19,7 +19,7 @@ class TwoDimensionalEnvironment:
             data = feature.get("data")
             
             if x >= obj.get('width') or y >= obj.get('height'):
-                raise RuntimeError("Feature in object is outside the environment!")
+                raise RuntimeError("Feature in object is outside the environment!"+str([x,y]))
             
             self._features[x][y] = data
 
