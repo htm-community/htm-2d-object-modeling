@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Jul 31 05:01:50 2019
-
-@author: osboxes
-"""
 
 import os.path
 import yaml
@@ -22,7 +17,7 @@ from htm.encoders.rdse import RDSE, RDSE_Parameters
 
 _EXEC_DIR = os.path.dirname(os.path.abspath(__file__))
 #go one folder up and then into the objects folder
-_OBJECTS_DIR=os.path.join(_EXEC_DIR,os.path.pardir,'objects')
+_OBJECTS_DIR=os.path.join(_EXEC_DIR,os.path.pardir, 'objects')
 
 OBJECT_FILENAME = 'a.yml'#what object to load
 
@@ -48,7 +43,7 @@ default_parameters = {
         'permanenceInc': 0.1}}
 
 def SystemSetup(parameters=default_parameters,verbose=True):
-  global agent,sensorEncoder,env,sensorLayer_sp,sensorLayer_sp_activeColumns
+  global agent, sensorEncoder, env, sensorLayer_sp, sensorLayer_sp_activeColumns
   
   if verbose:
     import pprint
@@ -57,7 +52,7 @@ def SystemSetup(parameters=default_parameters,verbose=True):
     print("")
     
   #create environment and the agent
-  env = htm2d.environment.TwoDimensionalEnvironment(20,20)
+  env = htm2d.environment.TwoDimensionalEnvironment(20, 20)
   agent = htm2d.agent.Agent()
     
     
@@ -92,7 +87,7 @@ def SystemSetup(parameters=default_parameters,verbose=True):
     boostStrength              = spParams["boostStrength"],
     wrapAround                 = True
   )
-  sp_info = Metrics( sensorLayer_sp.getColumnDimensions(), 999999999 )
+  sp_info = Metrics(sensorLayer_sp.getColumnDimensions(), 999999999 )
   
   # Create an SDR to represent active columns, This will be populated by the
   # compute method below. It must have the same dimensions as the Spatial Pooler.
@@ -136,20 +131,20 @@ def SystemCalculate():
   # Execute Spatial Pooling algorithm over input space.
   sensorLayer_sp.compute(sensorSDR, False, sensorLayer_sp_activeColumns)
 
-  plotBinaryMap("Input SDR",sensorSDR.size,sensorSDR.dense,subplot=121)
+  plotBinaryMap("Input SDR", sensorSDR.size, sensorSDR.dense, subplot=121)
   
-  plotBinaryMap("Sensor layer columns activation",sensorLayer_sp.getColumnDimensions()[0],sensorLayer_sp_activeColumns.dense,subplot=122,drawPlot=True)
+  plotBinaryMap("Sensor layer columns activation", sensorLayer_sp.getColumnDimensions()[0], sensorLayer_sp_activeColumns.dense, subplot=122, drawPlot=True)
   
   
-def plotBinaryMap(name,size,data,subplot=0,drawPlot=False):
+def plotBinaryMap(name, size, data, subplot=0, drawPlot=False):
   plotW = math.ceil(math.sqrt(size))
 
   rf = np.zeros([ plotW, plotW ], dtype=np.uint8)
   for i in range(plotW):
     arr = data[i*plotW:i*plotW+plotW]*2
     if len(arr)<plotW:
-      arr=np.concatenate([arr,np.ones(plotW-len(arr))])
-    rf[ :, i ] = arr
+      arr=np.concatenate([arr, np.ones(plotW-len(arr))])
+    rf[:, i] = arr
   
   if subplot>0:
     plt.subplot(subplot)
