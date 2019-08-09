@@ -119,9 +119,6 @@ def SystemSetup(parameters=default_parameters,verbose=True):
 def SystemCalculate():
   global sensorLayer_sp,arr
   
-  print("Calculation..")
-
-
   # encode sensor data to SDR--------------------------------------------------
  
   # convert sensed feature to int
@@ -175,12 +172,15 @@ if __name__ == "__main__":
   # put agent in the environment
   agent.set_env(env,3,4)
   
+  print("Iteration:"+str(0))
   SystemCalculate()
 
   for i in range(5):
+    print("Iteration:"+str(i+1))
     SystemCalculate()
     agent.moveDir(Direction.RIGHT)
     time.sleep(1)
+  
     
     
 
