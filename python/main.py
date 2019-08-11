@@ -21,30 +21,11 @@ _OBJECTS_DIR=os.path.join(_EXEC_DIR,os.path.pardir, 'objects')
 
 OBJECT_FILENAME = 'a.yml'#what object to load
 
-default_parameters = {
- 'enc': {'size': 700, 'sparsity': 0.02},#category encoder
- 'sdrc_alpha': 0.1,
- 'sensorLayer_sp': {'boostStrength': 3.0,
-        'columnCount': 1638,
-        'numActiveColumnsPerInhArea': 72,
-        'potentialPct': 0.85,
-        'synPermActiveInc': 0.04,
-        'synPermConnected': 0.13999999999999999,
-        'synPermInactiveDec': 0.006},
- 'time': {'timeOfDay': (30, 1), 'weekend': 21},
- 'tm': {'activationThreshold': 17,
-        'cellsPerColumn': 13,
-        'initialPerm': 0.21,
-        'maxSegmentsPerCell': 128,
-        'maxSynapsesPerSegment': 64,
-        'minThreshold': 10,
-        'newSynapseCount': 32,
-        'permanenceDec': 0.1,
-        'permanenceInc': 0.1}}
 
-def SystemSetup(parameters=default_parameters,verbose=True):
+
+def SystemSetup(parameters,verbose=True):
   global agent, sensorEncoder, env, sensorLayer_sp, sensorLayer_sp_activeColumns
-  
+
   if verbose:
     import pprint
     print("Parameters:")
@@ -161,8 +142,13 @@ def plotBinaryMap(name, size, data, subplot=0, drawPlot=False):
     plt.show()
 
 if __name__ == "__main__":
+   
+  # load model parameters from file
+  f = open('modelParams.cfg','r').read()
+  modelParams = eval(f)
   
-  SystemSetup()
+  # set up system
+  SystemSetup(modelParams)
   
   # put agent in the environment
   agent.set_env(env,3,4)
