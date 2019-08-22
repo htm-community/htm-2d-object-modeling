@@ -1,0 +1,8 @@
+# [dev-packages]
+pytest
+flake8
+black
+
+# [packages]
+PyYAML
+matplotlib
