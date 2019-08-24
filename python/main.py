@@ -10,7 +10,7 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 
-from utils import plotBinaryMap, isNotebook  # auxiliary functions from utils.py
+from utils import plotBinaryMap, isNotebook, plotEnvironment  # auxiliary functions from utils.py
 
 from htm.bindings.algorithms import SpatialPooler, TemporalMemory
 from htm.bindings.sdr import SDR, Metrics
@@ -26,7 +26,7 @@ OBJECT_FILENAME = "a.yml"  # what object to load
 anomalyHistData = []
 fig_layers = None
 fig_graphs = None
-
+fig_environment = None
 
 def SystemSetup(parameters, verbose=True):
     global agent, sensorEncoder, env, sensorLayer_sp, sensorLayer_SDR_columns
@@ -112,7 +112,7 @@ def SystemSetup(parameters, verbose=True):
 
 
 def SystemCalculate():
-    global sensorLayer_sp, sensorLayer_tm, anomalyHistData, fig_layers, fig_graphs
+    global sensorLayer_sp, sensorLayer_tm, anomalyHistData, fig_layers, fig_graphs, fig_environment
 
     # Encode sensor data to SDR--------------------------------------------------
 
@@ -146,6 +146,15 @@ def SystemCalculate():
     print("Feature:" + str(sensedFeature))
     print("Anomaly score:" + str(sensorLayer_tm.anomaly))
 
+    if (fig_environment == None or isNotebook()):  # create figure only if it doesn't exist yet or we are in interactive console
+        fig_environment, _ = plt.subplots(nrows=1, ncols=1, figsize=(6, 4))
+    else:
+        fig_environment.axes[0].clear()
+
+ 
+    plotEnvironment(fig_environment.axes[0], "Environment", env, agent.get_position())
+    
+
     if (
         fig_layers == None or isNotebook()
     ):  # create figure only if it doesn't exist yet or we are in interactive console
@@ -157,12 +166,12 @@ def SystemCalculate():
     plotBinaryMap(
         fig_layers.axes[1],
         "Sensor layer columns activation",
-        sensorLayer_SDR_columns.dense,
+        sensorLayer_SDR_columns.dense#nipy_spectral
     )
     plotBinaryMap(
         fig_layers.axes[2],
         "Location layer cells activation",
-        locationlayer_SDR_cells.dense,
+        locationlayer_SDR_cells.dense
     )
 
     fig_layers.tight_layout()
