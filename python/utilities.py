@@ -66,8 +66,6 @@ def plotEnvironment(
 
     cm = Colors.LinearSegmentedColormap.from_list("myCMap", colors, N=5)
 
-    print(arr)
-    print(cm)
     axes.set_xticks(np.arange(-0.5, 20, 1))
     axes.set_yticks(np.arange(-0.5, 20, 1))
     axes.set_xticklabels(np.arange(0, 20, 1))
