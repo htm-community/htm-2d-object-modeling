@@ -10,7 +10,7 @@ import numpy as np
 import time
 import matplotlib.pyplot as plt
 
-from utils import plotBinaryMap, isNotebook, plotEnvironment  # auxiliary functions from utils.py
+from utilities import plotBinaryMap, isNotebook, plotEnvironment  # auxiliary functions from utilities.py
 
 from htm.bindings.algorithms import SpatialPooler, TemporalMemory
 from htm.bindings.sdr import SDR, Metrics
