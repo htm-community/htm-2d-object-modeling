@@ -50,9 +50,11 @@ Agents should use their sensors to attempt to identify the object under observat
 ### Test Challenge \#1
 
 ### JavaScript
+See javascript [readme](javascript/).
 
 Code in the `javascript/` subfolder can be used to visualize Objects in the Object Library.
 
 ### Python
+See python [readme](python/).
 
 Code in the `python/` subfolder contains the beginnings of simple `Agent` and `Environment` implementations.
