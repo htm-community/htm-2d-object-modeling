@@ -111,7 +111,7 @@ def SystemSetup(parameters, verbose=True):
         predictedSegmentDecrement=0.0,
         maxSegmentsPerCell=tmParams["maxSegmentsPerCell"],
         maxSynapsesPerSegment=tmParams["maxSynapsesPerSegment"],
-        externalPredictiveInputs=locParams["cellCount"],
+        extra=locParams["cellCount"]
     )
     tm_info = Metrics([sensorLayer_tm.numberOfCells()], 999999999)
 
@@ -138,8 +138,8 @@ def SystemCalculate():
     sensorLayer_tm.compute(
         activeColumns=sensorLayer_SDR_columns,
         learn=True,
-        externalPredictiveInputsActive=externalDistalInput,
-        externalPredictiveInputsWinners=externalDistalInput,
+        extraActive=externalDistalInput,
+        extraWinners=externalDistalInput
     )  # we don't have columns in Location Layer
 
     if agent.get_position() != [3, 4]:  # HACK ALERT! Ignore at this pos (after reset)
