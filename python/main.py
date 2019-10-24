@@ -21,6 +21,11 @@ from htm.bindings.sdr import SDR, Metrics
 from htm.encoders.rdse import RDSE, RDSE_Parameters
 from htm.encoders.grid_cell_encoder import GridCellEncoder
 
+# Panda vis
+from pandaComm.pandaServer import PandaServer
+from pandaComm.dataExchange import ServerData, dataHTMObject, dataLayer, dataInput
+
+
 _EXEC_DIR = os.path.dirname(os.path.abspath(__file__))
 # go one folder up and then into the objects folder
 _OBJECTS_DIR = os.path.join(_EXEC_DIR, os.path.pardir, "objects")
@@ -32,6 +37,7 @@ fig_layers = None
 fig_graphs = None
 fig_environment = None
 
+pandaServer = PandaServer()
 
 def SystemSetup(parameters, verbose=True):
     global agent, sensorEncoder, env, sensorLayer_sp, sensorLayer_SDR_columns
@@ -97,7 +103,7 @@ def SystemSetup(parameters, verbose=True):
 
     locationlayer_SDR_cells = SDR(gridCellEncoder.dimensions)
 
-    tmParams = parameters["tm"]
+    tmParams = parameters["sensorLayer_tm"]
     sensorLayer_tm = TemporalMemory(
         columnDimensions=(spParams["columnCount"],),
         cellsPerColumn=tmParams["cellsPerColumn"],
@@ -135,12 +141,47 @@ def SystemCalculate():
     # Execute Temporal memory algorithm over the Sensory Layer, with mix of
     # Location Layer activity and Sensory Layer activity as distal input
     externalDistalInput = locationlayer_SDR_cells
-    sensorLayer_tm.compute(
-        activeColumns=sensorLayer_SDR_columns,
-        learn=True,
-        externalPredictiveInputsActive=externalDistalInput,
-        externalPredictiveInputsWinners=externalDistalInput,
-    )  # we don't have columns in Location Layer
+    #sensorLayer_tm.compute(
+    #    activeColumns=sensorLayer_SDR_columns,
+    #    learn=True,
+    #    externalPredictiveInputsActive=externalDistalInput,
+    #    externalPredictiveInputsWinners=externalDistalInput,
+    #)  # we don't have columns in Location Layer
+
+    sensorLayer_tm.activateDendrites(learn=True, externalPredictiveInputsActive=externalDistalInput, externalPredictiveInputsWinners=externalDistalInput)
+    predictiveCellsSDR = sensorLayer_tm.getPredictiveCells()
+
+
+    # ------------------HTMpandaVis----------------------
+
+    # fill up values
+    serverData.HTMObjects["HTM1"].inputs["SensoryLayer"].stringValue = "consumption: {:.2f}".format(sensedFeature)
+    serverData.HTMObjects["HTM1"].inputs["SensoryLayer"].bits = sensorSDR.sparse
+    serverData.HTMObjects["HTM1"].inputs["SensoryLayer"].count = sensorSDR.size
+
+    serverData.HTMObjects["HTM1"].inputs["LocationLayer"].stringValue = str(agent.get_position())
+    serverData.HTMObjects["HTM1"].inputs["LocationLayer"].bits = locationlayer_SDR_cells.sparse
+    serverData.HTMObjects["HTM1"].inputs["LocationLayer"].count = locationlayer_SDR_cells.size
+
+    serverData.HTMObjects["HTM1"].layers["SensoryLayer"].activeColumns = activeColumns.sparse
+    serverData.HTMObjects["HTM1"].layers["SensoryLayer"].winnerCells = tm.getWinnerCells().sparse
+    serverData.HTMObjects["HTM1"].layers["SensoryLayer"].predictiveCells = predictiveCellsSDR.sparse
+
+    pandaServer.serverData = serverData
+
+    pandaServer.spatialPoolers["HTM1"] = sp
+    pandaServer.temporalMemories["HTM1"] = tm
+    pandaServer.NewStateDataReady()
+
+    print("One step finished")
+    while not pandaServer.runInLoop and not pandaServer.runOneStep:
+        pass
+    pandaServer.runOneStep = False
+    print("Proceeding one step...")
+
+    # ------------------HTMpandaVis----------------------
+
+    sensorLayer_tm.activateCells(sensorLayer_SDR_columns, True)
 
     if agent.get_position() != [3, 4]:  # HACK ALERT! Ignore at this pos (after reset)
         anomalyHistData += [sensorLayer_tm.anomaly]
@@ -159,6 +200,7 @@ def SystemCalculate():
         fig_environment.axes[0].clear()
 
     plotEnvironment(fig_environment.axes[0], "Environment", env, agent.get_position())
+    fig_environment.canvas.draw()
 
     if (
         fig_layers == None or isNotebook()
@@ -180,6 +222,7 @@ def SystemCalculate():
     )
 
     fig_layers.tight_layout()
+    fig_layers.canvas.draw()
 
     # ---------------------------
     if (
@@ -191,15 +234,36 @@ def SystemCalculate():
 
     fig_graphs.axes[0].set_title("Anomaly score")
     fig_graphs.axes[0].plot(anomalyHistData)
+    fig_graphs.canvas.draw()
+
 
     plt.show(block=False)
+
     plt.pause(0.01)  # delay is needed for proper redraw
 
+def BuildPandaSystem(modelParams):
+    global serverData
+    serverData = ServerData()
+    serverData.HTMObjects["HTM1"] = dataHTMObject()
+    serverData.HTMObjects["HTM1"].inputs["FeatureSensor"] = dataInput()
+
+    serverData.HTMObjects["HTM1"].layers["SensoryLayer"] = dataLayer(
+        modelParams["sensorLayer_sp"]["columnCount"],
+        modelParams["sensorLayer_tm"]["cellsPerColumn"],
+    )
+    serverData.HTMObjects["HTM1"].layers["SensoryLayer"].proximalInputs = ["FeatureSensor"]
+
+    serverData.HTMObjects["HTM1"].layers["SensoryLayer"].proximalInputs = ["FeatureSensor"]
 
 if __name__ == "__main__":
+
     # load model parameters from file
     f = open("modelParams.cfg", "r").read()
     modelParams = eval(f)
+
+    # set up pandaVis
+    pandaServer.Start()
+    BuildPandaSystem(modelParams)
 
     # set up system
     SystemSetup(modelParams)
@@ -209,6 +273,11 @@ if __name__ == "__main__":
 
     agentDir = Direction.RIGHT
     iterationNo = 0
+
+
+
+
+
 
     for x in range(20):
         for i in range(5):
@@ -221,3 +290,5 @@ if __name__ == "__main__":
             time.sleep(0.01)
             iterationNo += 1
         agentDir = Direction.RIGHT if agentDir == Direction.LEFT else Direction.LEFT
+
+    pandaServer.MainThreadQuitted()
