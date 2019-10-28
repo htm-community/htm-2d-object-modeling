@@ -155,22 +155,22 @@ def SystemCalculate():
     # ------------------HTMpandaVis----------------------
 
     # fill up values
-    serverData.HTMObjects["HTM1"].inputs["SensoryLayer"].stringValue = "consumption: {:.2f}".format(sensedFeature)
-    serverData.HTMObjects["HTM1"].inputs["SensoryLayer"].bits = sensorSDR.sparse
-    serverData.HTMObjects["HTM1"].inputs["SensoryLayer"].count = sensorSDR.size
+    serverData.HTMObjects["HTM1"].inputs["FeatureSensor"].stringValue = "Feature: {:.2f}".format(sensedFeature)
+    serverData.HTMObjects["HTM1"].inputs["FeatureSensor"].bits = sensorSDR.sparse
+    serverData.HTMObjects["HTM1"].inputs["FeatureSensor"].count = sensorSDR.size
 
     serverData.HTMObjects["HTM1"].inputs["LocationLayer"].stringValue = str(agent.get_position())
     serverData.HTMObjects["HTM1"].inputs["LocationLayer"].bits = locationlayer_SDR_cells.sparse
     serverData.HTMObjects["HTM1"].inputs["LocationLayer"].count = locationlayer_SDR_cells.size
 
-    serverData.HTMObjects["HTM1"].layers["SensoryLayer"].activeColumns = activeColumns.sparse
-    serverData.HTMObjects["HTM1"].layers["SensoryLayer"].winnerCells = tm.getWinnerCells().sparse
+    serverData.HTMObjects["HTM1"].layers["SensoryLayer"].activeColumns = sensorLayer_SDR_columns.sparse
+    serverData.HTMObjects["HTM1"].layers["SensoryLayer"].winnerCells = sensorLayer_tm.getWinnerCells().sparse
     serverData.HTMObjects["HTM1"].layers["SensoryLayer"].predictiveCells = predictiveCellsSDR.sparse
 
     pandaServer.serverData = serverData
 
-    pandaServer.spatialPoolers["HTM1"] = sp
-    pandaServer.temporalMemories["HTM1"] = tm
+    pandaServer.spatialPoolers["HTM1"] = sensorLayer_sp
+    pandaServer.temporalMemories["HTM1"] = sensorLayer_tm
     pandaServer.NewStateDataReady()
 
     print("One step finished")
@@ -252,8 +252,10 @@ def BuildPandaSystem(modelParams):
         modelParams["sensorLayer_tm"]["cellsPerColumn"],
     )
     serverData.HTMObjects["HTM1"].layers["SensoryLayer"].proximalInputs = ["FeatureSensor"]
+    serverData.HTMObjects["HTM1"].layers["SensoryLayer"].distalInputs = ["LocationLayer"]
 
-    serverData.HTMObjects["HTM1"].layers["SensoryLayer"].proximalInputs = ["FeatureSensor"]
+
+    serverData.HTMObjects["HTM1"].inputs["LocationLayer"] = dataInput() # for now, Location layer is just position encoder
 
 if __name__ == "__main__":
 
