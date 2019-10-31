@@ -150,9 +150,14 @@ def SystemCalculate():
     #    externalPredictiveInputsWinners=externalDistalInput,
     #)  # we don't have columns in Location Layer
 
+    # activateDendrites calculates active segments
     sensorLayer_tm.activateDendrites(learn=True, externalPredictiveInputsActive=externalDistalInput, externalPredictiveInputsWinners=externalDistalInput)
+    # predictive cells are calculated directly from active segments
     predictiveCellsSDR = sensorLayer_tm.getPredictiveCells()
 
+    sensorLayer_tm.calculateAnomalyScore(sensorLayer_SDR_columns)
+
+    sensorLayer_tm.activateCells(sensorLayer_SDR_columns, True)
 
     # ------------------HTMpandaVis----------------------
 
@@ -175,11 +180,10 @@ def SystemCalculate():
     pandaServer.temporalMemories["HTM1"] = sensorLayer_tm
     pandaServer.NewStateDataReady()
 
-    sensorLayer_tm.calculateAnomalyScore(sensorLayer_SDR_columns)
-
     print("Position:" + str(agent.get_position()))
     print("Feature:" + str(sensedFeature))
     print("Anomaly score:" + str(sensorLayer_tm.anomaly))
+    anomalyHistData += [sensorLayer_tm.anomaly]
 
     # Plotting and visualising environment-------------------------------------------
     if (
@@ -203,10 +207,21 @@ def SystemCalculate():
 
     # ------------------HTMpandaVis----------------------
 
-    sensorLayer_tm.activateCells(sensorLayer_SDR_columns, True)
+    if PLOT_GRAPHS:
+        # ---------------------------
+        if (
+                fig_graphs == None or isNotebook()
+        ):  # create figure only if it doesn't exist yet or we are in interactive console
+            fig_graphs, _ = plt.subplots(nrows=1, ncols=1, figsize=(5, 2))
+        else:
+            fig_graphs.axes[0].clear()
 
-    #if agent.get_position() != [3, 4]:  # HACK ALERT! Ignore at this pos (after reset)
-    #    anomalyHistData += [sensorLayer_tm.anomaly]
+        fig_graphs.axes[0].set_title("Anomaly score")
+        fig_graphs.axes[0].plot(anomalyHistData)
+        fig_graphs.canvas.draw()
+
+        #if agent.get_position() != [3, 4]:  # HACK ALERT! Ignore at this pos (after reset)
+        #    anomalyHistData += [sensorLayer_tm.anomaly]
 
 
 
@@ -253,7 +268,7 @@ if __name__ == "__main__":
 
 
 
-    for x in range(20000):
+    for x in range(2000):
         for i in range(5):
             print("Iteration:" + str(iterationNo))
             SystemCalculate()
