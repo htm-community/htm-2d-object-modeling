@@ -26,6 +26,8 @@ from pandaComm.pandaServer import PandaServer
 from pandaComm.dataExchange import ServerData, dataHTMObject, dataLayer, dataInput
 
 
+PLOT_GRAPHS = False
+
 _EXEC_DIR = os.path.dirname(os.path.abspath(__file__))
 # go one folder up and then into the objects folder
 _OBJECTS_DIR = os.path.join(_EXEC_DIR, os.path.pardir, "objects")
@@ -173,6 +175,26 @@ def SystemCalculate():
     pandaServer.temporalMemories["HTM1"] = sensorLayer_tm
     pandaServer.NewStateDataReady()
 
+    sensorLayer_tm.calculateAnomalyScore(sensorLayer_SDR_columns)
+
+    print("Position:" + str(agent.get_position()))
+    print("Feature:" + str(sensedFeature))
+    print("Anomaly score:" + str(sensorLayer_tm.anomaly))
+
+    # Plotting and visualising environment-------------------------------------------
+    if (
+            fig_environment == None or isNotebook()
+    ):  # create figure only if it doesn't exist yet or we are in interactive console
+        fig_environment, _ = plt.subplots(nrows=1, ncols=1, figsize=(6, 4))
+    else:
+        fig_environment.axes[0].clear()
+
+    plotEnvironment(fig_environment.axes[0], "Environment", env, agent.get_position())
+    fig_environment.canvas.draw()
+
+    plt.show(block=False)
+    plt.pause(0.1)  # delay is needed for proper redraw
+
     print("One step finished")
     while not pandaServer.runInLoop and not pandaServer.runOneStep:
         pass
@@ -183,63 +205,13 @@ def SystemCalculate():
 
     sensorLayer_tm.activateCells(sensorLayer_SDR_columns, True)
 
-    if agent.get_position() != [3, 4]:  # HACK ALERT! Ignore at this pos (after reset)
-        anomalyHistData += [sensorLayer_tm.anomaly]
-
-    # Plotting and visualising --------------------------------------------------
-
-    print("Position:" + str(agent.get_position()))
-    print("Feature:" + str(sensedFeature))
-    print("Anomaly score:" + str(sensorLayer_tm.anomaly))
-
-    if (
-        fig_environment == None or isNotebook()
-    ):  # create figure only if it doesn't exist yet or we are in interactive console
-        fig_environment, _ = plt.subplots(nrows=1, ncols=1, figsize=(6, 4))
-    else:
-        fig_environment.axes[0].clear()
-
-    plotEnvironment(fig_environment.axes[0], "Environment", env, agent.get_position())
-    fig_environment.canvas.draw()
-
-    if (
-        fig_layers == None or isNotebook()
-    ):  # create figure only if it doesn't exist yet or we are in interactive console
-        fig_layers, _ = plt.subplots(nrows=1, ncols=3, figsize=(10, 6))
-    else:
-        fig_layers.axes[0].clear()
-
-    plotBinaryMap(fig_layers.axes[0], "Input SDR", sensorSDR.dense)
-    plotBinaryMap(
-        fig_layers.axes[1],
-        "Sensor layer columns activation",
-        sensorLayer_SDR_columns.dense,  # nipy_spectral
-    )
-    plotBinaryMap(
-        fig_layers.axes[2],
-        "Location layer cells activation",
-        locationlayer_SDR_cells.dense,
-    )
-
-    fig_layers.tight_layout()
-    fig_layers.canvas.draw()
-
-    # ---------------------------
-    if (
-        fig_graphs == None or isNotebook()
-    ):  # create figure only if it doesn't exist yet or we are in interactive console
-        fig_graphs, _ = plt.subplots(nrows=1, ncols=1, figsize=(5, 2))
-    else:
-        fig_graphs.axes[0].clear()
-
-    fig_graphs.axes[0].set_title("Anomaly score")
-    fig_graphs.axes[0].plot(anomalyHistData)
-    fig_graphs.canvas.draw()
+    #if agent.get_position() != [3, 4]:  # HACK ALERT! Ignore at this pos (after reset)
+    #    anomalyHistData += [sensorLayer_tm.anomaly]
 
 
-    plt.show(block=False)
 
-    plt.pause(0.01)  # delay is needed for proper redraw
+
+
 
 def BuildPandaSystem(modelParams):
     global serverData
@@ -281,7 +253,7 @@ if __name__ == "__main__":
 
 
 
-    for x in range(20):
+    for x in range(20000):
         for i in range(5):
             print("Iteration:" + str(iterationNo))
             SystemCalculate()
