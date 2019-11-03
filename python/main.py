@@ -20,6 +20,7 @@ from htm.bindings.algorithms import SpatialPooler, TemporalMemory
 from htm.bindings.sdr import SDR, Metrics
 from htm.encoders.rdse import RDSE, RDSE_Parameters
 from htm.encoders.grid_cell_encoder import GridCellEncoder
+from htm.algorithms.anomaly import Anomaly
 
 # Panda vis
 from pandaComm.pandaServer import PandaServer
@@ -155,7 +156,9 @@ def SystemCalculate():
     # predictive cells are calculated directly from active segments
     predictiveCellsSDR = sensorLayer_tm.getPredictiveCells()
 
-    sensorLayer_tm.calculateAnomalyScore(sensorLayer_SDR_columns)
+    rawAnomaly = Anomaly.calculateRawAnomaly(sensorLayer_SDR_columns, predictiveCellsSDR)
+
+
 
     sensorLayer_tm.activateCells(sensorLayer_SDR_columns, True)
 
@@ -182,7 +185,7 @@ def SystemCalculate():
 
     print("Position:" + str(agent.get_position()))
     print("Feature:" + str(sensedFeature))
-    print("Anomaly score:" + str(sensorLayer_tm.anomaly))
+    print("Anomaly score:" + str(rawAnomaly))
     anomalyHistData += [sensorLayer_tm.anomaly]
 
     # Plotting and visualising environment-------------------------------------------
@@ -200,8 +203,8 @@ def SystemCalculate():
     plt.pause(0.1)  # delay is needed for proper redraw
 
     print("One step finished")
-    while not pandaServer.runInLoop and not pandaServer.runOneStep:
-        pass
+    #while not pandaServer.runInLoop and not pandaServer.runOneStep:
+    #    pass
     pandaServer.runOneStep = False
     print("Proceeding one step...")
 
@@ -222,8 +225,6 @@ def SystemCalculate():
 
         #if agent.get_position() != [3, 4]:  # HACK ALERT! Ignore at this pos (after reset)
         #    anomalyHistData += [sensorLayer_tm.anomaly]
-
-
 
 
 
