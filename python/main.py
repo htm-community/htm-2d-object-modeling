@@ -156,7 +156,7 @@ def SystemCalculate():
     # predictive cells are calculated directly from active segments
     predictiveCellsSDR = sensorLayer_tm.getPredictiveCells()
 
-    rawAnomaly = Anomaly.calculateRawAnomaly(sensorLayer_SDR_columns, predictiveCellsSDR)
+    rawAnomaly = Anomaly.calculateRawAnomaly(sensorLayer_SDR_columns, sensorLayer_tm.cellsToColumns(predictiveCellsSDR))
 
 
 
@@ -203,8 +203,8 @@ def SystemCalculate():
     plt.pause(0.1)  # delay is needed for proper redraw
 
     print("One step finished")
-    #while not pandaServer.runInLoop and not pandaServer.runOneStep:
-    #    pass
+    while not pandaServer.runInLoop and not pandaServer.runOneStep:
+        pass
     pandaServer.runOneStep = False
     print("Proceeding one step...")
 
