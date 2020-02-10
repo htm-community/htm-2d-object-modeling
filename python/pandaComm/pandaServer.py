@@ -61,6 +61,8 @@ class PandaServer:
         self.serverData = ServerData()
         self.runOneStep = False
         self.runInLoop = False
+        self.gotoIteration = False
+        self.gotoIteration_no = 0
         self.newStateDataReadyForVis = False
         self.mainThreadQuitted = False
 
@@ -117,6 +119,8 @@ class PandaServer:
                     # rxRawData = conn.recv(4096)
 
                     rxData = pickle.loads(rxRawData)
+
+                    #self.serverData = ServerData() # clear server data to start with blank structure
 
                     if rxData[0] == CLIENT_CMD.CMD_GET_STATE_DATA:
                         printLog("State data requested", verbosityHigh)
@@ -194,7 +198,7 @@ class PandaServer:
                         reqCellID = requestedColumn*cellsPerColumn + requestedCell
                         
                         printLog("Requested cell ID:"+str(reqCellID),verbosityMedium)
-                        # TODO winner cells
+
                         tm = self.temporalMemories[HTMObjectName]
 
                         presynCells = getPresynapticCellsForCell(tm,reqCellID)
@@ -209,8 +213,7 @@ class PandaServer:
                         send_one_message(
                             conn, PackData(SERVER_CMD.SEND_DISTAL_DATA, self.serverData)
                         )
-                        
-                        # TODO predictive cells
+
                         
                     elif rxData[0] == CLIENT_CMD.CMD_RUN:
                         self.runInLoop = True
@@ -221,6 +224,14 @@ class PandaServer:
                     elif rxData[0] == CLIENT_CMD.CMD_STEP_FWD:
                         self.runOneStep = True
                         printLog("STEP", verbosityHigh)
+                    elif rxData[0] == CLIENT_CMD.CMD_GOTO:
+                        self.gotoIteration = True
+                        self.gotoIteration_no = rxData[1]
+                        printLog("GOTO:"+str(self.gotoIteration_no), verbosityHigh)
+
+                        if self.serverData.iterationNo >= self.gotoIteration_no: # handle when current iteration is above or equal requested
+                            self.gotoIteration = False
+
                     elif rxData[0] == CLIENT_CMD.QUIT:
                         printLog("Client quitted!")
                         # quitServer=True
