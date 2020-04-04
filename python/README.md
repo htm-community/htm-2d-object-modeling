@@ -2,41 +2,43 @@
 
 ## Installation
 
-Pipenv seems to be the best environment manager.  https://pipenv.readthedocs.io/en/latest/
+You can use variety of python environment managers, but we recommend Anaconda with Python 3.6+
+or using pure system python.
+
+**Use Python3.6+ and be careful, that you are actually using it**
 
 Inside the `python` directory, run:
 
 ```bash
-brew install pipenv
-pipenv install
+python -m pip install -r requirements.txt
 ```
 
 ## Run the tests
 
 ```
-pipenv run python -m unittest tests/*.py
+python -m unittest tests/*.py
+```
+# Run
+
+Just run in the python folder
+```
+python main.py
 ```
 
-## Add a package
+# Using visualization tool
 
-```
-pipenv install pyyaml
-```
-
-Or a dev package
-
-```
-pipenv install flake8 --dev
-```
+You can use [visualisation tool for HTM systems](https://github.com/htm-community/HTMpandaVis).
+Install what is neccessary according to project readme & enable using pandaVis in the main.py by setting appropriate flag at the beginning of the script.
+Firstly run the vis tool in terminal, then run this script in terminal. It will get connected through TCP and show state of HTM system.
 
 # Code style / formatting
 
 Project uses flake8(quality code check) and black(code formatter).
-Install them globally so your IDE can find them or point your IDE at your pipenv environment.
+Install them globally so your IDE can find them or point your IDE at your py environment.
 
 ```
-pip3 install flake8
-pip3 install black
+python -m pip install flake8
+python -m pip install black
 ```
 
 Setup your IDE to 4 spaces indentation.
