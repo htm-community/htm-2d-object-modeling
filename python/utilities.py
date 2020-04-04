@@ -5,7 +5,7 @@ import math
 import matplotlib.colors as Colors
 
 
-def plotBinaryMap(axes, name, data, colors=["black", "lime", "gray"]):
+def plotSDRBinaryMap(axes, name, data, colors=["black", "lime", "gray"]):
 
     axes.set_title(name)
     axes.set_xlabel("Rows")
@@ -25,6 +25,37 @@ def plotBinaryMap(axes, name, data, colors=["black", "lime", "gray"]):
     cm = Colors.LinearSegmentedColormap.from_list("myCMap", colors, N=3)
 
     axes.imshow(rf, interpolation="nearest", norm=Colors.Normalize(0, 10), cmap=cm)
+
+def plotBinaryMap(
+    axes, name, data, colors=["black", "lime"]
+):
+
+    # Translate list (with custom datatypes) to the numpy numeric array
+    width = len(data)
+    height = len(data[0])
+
+    arr = np.zeros((width, height), dtype=np.uint8)
+    for x in range(width):
+        for y in range(height):
+            if data[x][y] != 0:
+                arr[x][y] = 1
+
+    axes.set_title(name)
+    axes.set_xlabel("x")
+    axes.set_ylabel("y")
+
+    # features will be value 5
+    arr = arr
+
+    cm = Colors.LinearSegmentedColormap.from_list("myCMap", colors, N=2)
+
+    axes.set_xticks(np.arange(-0.5, 20, 1))
+    axes.set_yticks(np.arange(-0.5, 20, 1))
+    axes.set_xticklabels(np.arange(0, 20, 1))
+    axes.set_yticklabels(np.arange(0, 20, 1))
+
+    axes.grid(color="w", linestyle="-", linewidth=2)
+    axes.imshow(arr.T, interpolation="nearest", norm=Colors.Normalize(0, 1), cmap=cm)
 
 
 def plotEnvironment(
