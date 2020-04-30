@@ -25,13 +25,12 @@ from htm.algorithms.anomaly import Anomaly
 
 PLOT_GRAPHS = False
 PLOT_ENV = False
-DISABLE_PANDA = True
+DISABLE_PANDA = False
 
 # Panda vis
 if not DISABLE_PANDA:
-    from pandaComm.pandaServer import PandaServer
-    from pandaComm.dataExchange import ServerData, dataHTMObject, dataLayer, dataInput
-
+    from PandaVis.pandaComm.server import PandaServer
+    from PandaVis.pandaComm.dataExchange import ServerData, dataHTMObject, dataLayer, dataInput
 
 _EXEC_DIR = os.path.dirname(os.path.abspath(__file__))
 # go one folder up and then into the objects folder
@@ -177,7 +176,7 @@ def SystemCalculate(feature, learning , predictiveCellsSDR_last):
     predictiveCellsSDR = sensorLayer_tm.getPredictiveCells()
 
     # --------------------- VIS ------------------------------
-
+    # do not update if we are running GOTO iteration command
     if not DISABLE_PANDA and (not pandaServer.gotoIteration or (pandaServer.gotoIteration and pandaServer.gotoIteration_no == iterationNo)):
         # ------------------HTMpandaVis----------------------
         # fill up values
@@ -233,17 +232,9 @@ def SystemCalculate(feature, learning , predictiveCellsSDR_last):
         plt.pause(0.001)  # delay is needed for proper redraw
 
     if not DISABLE_PANDA:
-
-        if pandaServer.gotoIteration:
-            if pandaServer.gotoIteration_no <= iterationNo:
-                pandaServer.gotoIteration = False
-
-        if not pandaServer.gotoIteration:
-            print("One step finished")
-            while not pandaServer.runInLoop and not pandaServer.runOneStep and not pandaServer.gotoIteration:
-                pass
-            pandaServer.runOneStep = False
-            print("Proceeding one step...")
+        print("One step finished")
+        pandaServer.BlockExecution()
+        print("Proceeding one step...")
 
 
 
