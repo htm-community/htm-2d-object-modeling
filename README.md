@@ -29,7 +29,7 @@ Initially, all Features consist of a simple data type, but should be extensible 
 
 The Object Library can be found in `objects/`. Each YAML file within this directory contains one object definition in the format specified in "Object Schema" above.
 
-![example object with agent](doc/images/objectSpace.jpg)
+![example object with agent](doc/images/objectSpace.jpeg)
 
 ## Agency
 
