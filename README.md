@@ -48,15 +48,19 @@ Each Agent has exactly 4 sensors:
 - West  (Agent X - 1)
 
 At one time step, an Agent can be at only one location in Object space. Each sensor has access to the Feature beneath it.
-*Agents should use their sensors to attempt to identify the object under observation at each time step.*
+**Agents should use their sensors to attempt to identify the object under observation at each time step.**
 
 ## Algorithm concept
 
-We need to build a 3-layer Network for each sensor which has an object pooling layer as described in the [Columns Paper](https://numenta.com/neuroscience-research/research-publications/papers/a-theory-of-how-columns-in-the-neocortex-enable-learning-the-structure-of-the-world/) above a 2-layer location/sensor circuit as described in [Columns+](https://numenta.com/neuroscience-research/research-publications/papers/locations-in-the-neocortex-a-theory-of-sensorimotor-object-recognition-using-cortical-grid-cells/):
+We need to build a 3-layer Network for each sensor which has an object pooling layer as described in the [Columns Paper](https://numenta.com/neuroscience-research/research-publications/papers/a-theory-of-how-columns-in-the-neocortex-enable-learning-the-structure-of-the-world/) 
+
+above a 2-layer location/sensor circuit as described in [Columns+](https://numenta.com/neuroscience-research/research-publications/papers/locations-in-the-neocortex-a-theory-of-sensorimotor-object-recognition-using-cortical-grid-cells/):
+
 ![Three layer network](doc/images/ThreeLayer.jpeg)
 
 Object layers must share representations between cortical columns via lateral connections:
 ![Lateral connections](doc/images/lateral.jpeg)
+
 For code examples, see the [supporting paper for the Columns paper](https://github.com/numenta/htmpapers/tree/master/frontiers/a_theory_of_how_columns_in_the_neocortex_enable_learning_the_structure_of_the_world)
 
 
@@ -66,7 +70,7 @@ For code examples, see the [supporting paper for the Columns paper](https://gith
 See javascript [readme](objectVisualizer/).
 
 ### Java
-- this folder now contains just "Hello World!" program in Java. Code here if you wan't to use Java.
+This folder now contains just "Hello World!" program in Java. Code here if you want to use Java language.
 
 ### Python
 Currently used language for the development.
