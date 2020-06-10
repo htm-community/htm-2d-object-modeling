@@ -5,7 +5,8 @@
 The purpose of this project is to define **2D Object Recognition Tests**.
 
 ## Current project status
-- TODO
+
+Github is used for the tracking of tasks. See repository Issues.
 
 ## Task definition
 ### Object Schema
