@@ -4,6 +4,10 @@
 
 The purpose of this project is to define **2D Object Recognition Tests**.
 
+## Current project status
+- TODO
+
+## Task definition
 ### Object Schema
 
 Objects exist within a 2D space. The space has a width and height. Each location in the space can be identified with an X and Y integer coordinate. Each location may have a Feature.
@@ -35,7 +39,7 @@ The Object Library can be found in `objects/`. Each YAML file within this direct
 
 An Agent can exist in a location within an Object space. An Agent observing an object will receive features in space according to the location of its sensors.
 
-![Agent picture](https://discourse-cdn-sjc2.com/standard14/uploads/numenta/original/2X/4/49d9249b29105c9efa9eb0bbfa5b53e7f3ee369a.jpeg)
+![Agent picture](doc/images/agentSensors.jpeg)
 
 Each Agent has exactly 4 sensors:
 - North (Agent Y - 1)
@@ -44,17 +48,27 @@ Each Agent has exactly 4 sensors:
 - West  (Agent X - 1)
 
 At one time step, an Agent can be at only one location in Object space. Each sensor has access to the Feature beneath it.
+*Agents should use their sensors to attempt to identify the object under observation at each time step.*
 
-Agents should use their sensors to attempt to identify the object under observation at each time step.
+## Algorithm concept
 
-### Test Challenge \#1
+We need to build a 3-layer Network for each sensor which has an object pooling layer as described in the [Columns Paper](https://numenta.com/neuroscience-research/research-publications/papers/a-theory-of-how-columns-in-the-neocortex-enable-learning-the-structure-of-the-world/) above a 2-layer location/sensor circuit as described in [Columns+](https://numenta.com/neuroscience-research/research-publications/papers/locations-in-the-neocortex-a-theory-of-sensorimotor-object-recognition-using-cortical-grid-cells/):
+![Three layer network](doc/images/ThreeLayer.jpeg)
 
-### JavaScript
-See javascript [readme](javascript/).
+Object layers must share representations between cortical columns via lateral connections:
+![Lateral connections](doc/images/lateral.jpeg)
+For code examples, see the [supporting paper for the Columns paper](https://github.com/numenta/htmpapers/tree/master/frontiers/a_theory_of_how_columns_in_the_neocortex_enable_learning_the_structure_of_the_world)
 
-Code in the `javascript/` subfolder can be used to visualize Objects in the Object Library.
+
+## Project structure
+
+### Visualization of the objects from the Object Library
+See javascript [readme](objectVisualizer/).
+
+### Java
+- this folder now contains just "Hello World!" program in Java. Code here if you wan't to use Java.
 
 ### Python
-See python [readme](python/).
+Currently used language for the development.
+See python [readme](python/) for instructions how to run.
 
-Code in the `python/` subfolder contains the beginnings of simple `Agent` and `Environment` implementations.
